@@ -33,7 +33,13 @@ export default async function CollectionDetailPage({ params }: PageProps) {
   return (
     <AppLayout>
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        <p className="text-sm text-muted-foreground">
+        <Link
+          href="/collections"
+          className="text-sm font-medium text-violet-600 hover:underline dark:text-violet-400"
+        >
+          ← All collections
+        </Link>
+        <p className="mt-4 text-sm text-muted-foreground">
           by{" "}
           <Link
             href={`/profile/${collection.creatorUsername}`}
@@ -42,7 +48,7 @@ export default async function CollectionDetailPage({ params }: PageProps) {
             {collection.creator}
           </Link>
         </p>
-        <h1 className="mt-1 text-3xl font-bold">{collection.title}</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{collection.title}</h1>
         <p className="mt-3 text-muted-foreground leading-relaxed">{collection.description}</p>
         <div className="mt-4 flex flex-wrap gap-1.5">
           {collection.tags.map((tag) => (
@@ -58,7 +64,7 @@ export default async function CollectionDetailPage({ params }: PageProps) {
               <Link
                 key={item!.id}
                 href={`/items/${item!.slug}`}
-                className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 hover:shadow-md transition-shadow"
+                className="flex items-center gap-4 rounded-xl border border-border/70 bg-card p-4 transition-all hover:border-violet-300/50 hover:shadow-md dark:hover:border-violet-700/40"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-700 font-bold dark:bg-violet-950 dark:text-violet-300">
                   {item!.rank}

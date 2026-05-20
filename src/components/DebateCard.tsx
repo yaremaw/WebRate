@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { RateItem } from "@/types";
 import { RatingDistribution } from "@/components/RatingDistribution";
-import { Button } from "@/components/ui/button";
 
 interface DebateCardProps {
   item: RateItem;
@@ -9,7 +8,7 @@ interface DebateCardProps {
 
 export function DebateCard({ item }: DebateCardProps) {
   return (
-    <article className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <article className="card-elevated p-5">
       <Link href={`/items/${item.slug}`}>
         <h3 className="font-semibold text-lg hover:text-violet-600 dark:hover:text-violet-400">
           {item.title}
@@ -37,9 +36,12 @@ export function DebateCard({ item }: DebateCardProps) {
           </blockquote>
         )}
       </div>
-      <Button asChild variant="outline" size="sm" className="mt-4">
-        <Link href={`/items/${item.slug}`}>See the debate</Link>
-      </Button>
+      <Link
+        href={`/items/${item.slug}`}
+        className="mt-4 inline-flex text-sm font-medium text-violet-600 hover:underline dark:text-violet-400"
+      >
+        See the debate →
+      </Link>
     </article>
   );
 }

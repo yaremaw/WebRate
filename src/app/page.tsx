@@ -10,7 +10,8 @@ import { CollectionCard } from "@/components/CollectionCard";
 import { DailyPromptCard } from "@/components/DailyPromptCard";
 import { CategoryPill } from "@/components/CategoryPill";
 import { TagPill } from "@/components/TagPill";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { getTrendingItems, getControversialItems, items } from "@/data/items";
 import { collections } from "@/data/collections";
 import { categories } from "@/data/categories";
@@ -48,8 +49,10 @@ export default function HomePage() {
     <AppLayout>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-background to-indigo-50/50 dark:from-violet-950/20 dark:via-background dark:to-indigo-950/10" />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-100/40 via-background to-indigo-100/30 dark:from-violet-950/30 dark:via-background dark:to-indigo-950/20" />
+        <div className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-violet-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-16 top-40 h-64 w-64 rounded-full bg-indigo-400/20 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -71,17 +74,45 @@ export default function HomePage() {
                 strange little things people secretly have opinions about.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button size="lg" className="bg-violet-600 hover:bg-violet-700" asChild>
-                  <Link href="/create">
-                    Start rating
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link href="/explore">Explore trending</Link>
-                </Button>
+                <Link
+                  href="/create"
+                  className={cn(
+                    buttonVariants({ size: "lg" }),
+                    "bg-violet-600 text-white hover:bg-violet-700"
+                  )}
+                >
+                  Start rating
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+                <Link href="/explore" className={buttonVariants({ size: "lg", variant: "outline" })}>
+                  Explore trending
+                </Link>
               </div>
             </motion.div>
+
+            {/* Mobile hero cards */}
+            <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x lg:hidden">
+              {heroCards.map((card) => (
+                <Link
+                  key={card.slug}
+                  href={`/items/${card.slug}`}
+                  className="min-w-[200px] snap-start rounded-2xl border border-border/70 bg-card/95 p-4 shadow-md"
+                >
+                  <div
+                    className="mb-3 h-14 rounded-xl"
+                    style={{
+                      background: `linear-gradient(135deg, ${card.color}33, ${card.color}77)`,
+                    }}
+                  />
+                  <h3 className="font-semibold text-sm">{card.title}</h3>
+                  <div className="mt-2 flex items-center gap-1">
+                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    <span className="font-bold">{card.rating}</span>
+                  </div>
+                  <TagPill label={card.tag} variant="accent" className="mt-2" />
+                </Link>
+              ))}
+            </div>
 
             <div className="relative hidden h-80 lg:block">
               {heroCards.map((card, i) => (
@@ -90,7 +121,7 @@ export default function HomePage() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + i * 0.15, duration: 0.5 }}
-                  className="absolute w-52 rounded-2xl border border-border bg-card p-4 shadow-lg"
+                  className="absolute w-52 rounded-2xl border border-border/70 bg-card/95 p-4 shadow-xl shadow-violet-500/10"
                   style={{
                     top: i * 60,
                     left: i * 80,
@@ -130,7 +161,7 @@ export default function HomePage() {
           </div>
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">Trending now</h2>
+              <h2 className="section-title">Trending now</h2>
               <Link
                 href="/explore"
                 className="text-sm font-medium text-violet-600 hover:underline dark:text-violet-400"

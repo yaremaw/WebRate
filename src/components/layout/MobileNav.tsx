@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
   open: boolean;
@@ -57,11 +58,16 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
               ))}
             </div>
             <div className="border-t border-border p-4">
-              <Button className="w-full bg-violet-600 hover:bg-violet-700" asChild>
-                <Link href="/create" onClick={onClose}>
-                  Start rating
-                </Link>
-              </Button>
+              <Link
+                href="/create"
+                onClick={onClose}
+                className={cn(
+                  buttonVariants({ size: "default" }),
+                  "w-full bg-violet-600 text-white hover:bg-violet-700"
+                )}
+              >
+                Start rating
+              </Link>
             </div>
           </motion.nav>
         </>

@@ -6,7 +6,8 @@ import { Menu } from "lucide-react";
 import { SearchBar } from "@/components/SearchBar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MobileNav } from "@/components/layout/MobileNav";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/explore", label: "Explore" },
@@ -20,7 +21,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-lg">
+      <header className="sticky top-0 z-40 border-b border-border/50 bg-background/85 shadow-sm backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex shrink-0 items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 text-sm font-bold text-white">
@@ -47,16 +48,21 @@ export function Header() {
 
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
-            <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
-              <Link href="/profile/nazar_rates">Sign in</Link>
-            </Button>
-            <Button
-              size="sm"
-              className="hidden bg-violet-600 hover:bg-violet-700 sm:inline-flex"
-              asChild
+            <Link
+              href="/profile/nazar_rates"
+              className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex")}
             >
-              <Link href="/create">Start rating</Link>
-            </Button>
+              Sign in
+            </Link>
+            <Link
+              href="/create"
+              className={cn(
+                buttonVariants({ size: "sm" }),
+                "hidden bg-violet-600 text-white hover:bg-violet-700 sm:inline-flex"
+              )}
+            >
+              Start rating
+            </Link>
             <Button
               variant="ghost"
               size="icon"

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface EmptyStateProps {
   title: string;
@@ -22,9 +23,12 @@ export function EmptyState({
       <h3 className="text-lg font-semibold">{title}</h3>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">{description}</p>
       {actionLabel && actionHref && (
-        <Button asChild className="mt-6 bg-violet-600 hover:bg-violet-700">
-          <Link href={actionHref}>{actionLabel}</Link>
-        </Button>
+        <Link
+          href={actionHref}
+          className={cn(buttonVariants(), "mt-6 bg-violet-600 text-white hover:bg-violet-700")}
+        >
+          {actionLabel}
+        </Link>
       )}
     </div>
   );

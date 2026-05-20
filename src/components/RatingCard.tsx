@@ -6,7 +6,6 @@ import { Star } from "lucide-react";
 import type { RateItem } from "@/types";
 import { RatingDistribution } from "@/components/RatingDistribution";
 import { TagPill } from "@/components/TagPill";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface RatingCardProps {
@@ -20,51 +19,54 @@ export function RatingCard({ item, showDistribution = false, className }: Rating
 
   return (
     <motion.article
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -5 }}
       transition={{ duration: 0.2 }}
-      className={cn(
-        "group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md",
-        className
-      )}
+      className={cn("h-full", className)}
     >
-      <Link href={`/items/${item.slug}`} className="block">
+      <Link
+        href={`/items/${item.slug}`}
+        className={cn(
+          "group flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card/95",
+          "shadow-sm transition-all hover:border-violet-300/50 hover:shadow-lg hover:shadow-violet-500/10",
+          "dark:hover:border-violet-700/40"
+        )}
+      >
         <div
-          className="relative h-36 w-full"
+          className="relative h-40 w-full overflow-hidden"
           style={{
             background: item.color
-              ? `linear-gradient(135deg, ${item.color}22, ${item.color}55)`
-              : undefined,
+              ? `linear-gradient(145deg, ${item.color}18 0%, ${item.color}45 50%, ${item.color}22 100%)`
+              : "linear-gradient(145deg, #f1f5f9, #e2e8f0)",
           }}
         >
           <div
-            className="absolute inset-0 flex items-center justify-center text-4xl font-bold opacity-20"
-            style={{ color: item.color }}
+            className="absolute inset-0 flex items-center justify-center text-5xl font-black opacity-[0.12]"
+            style={{ color: item.color ?? "#64748b" }}
           >
             {item.title.charAt(0)}
           </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
           {isControversial && (
-            <div className="absolute right-3 top-3">
+            <div className="absolute right-3 top-3 z-10">
               <TagPill label="controversial" variant="controversial" />
             </div>
           )}
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-background/90 px-2.5 py-1 shadow-sm backdrop-blur-sm">
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+            <span className="text-sm font-bold">{item.averageRating.toFixed(1)}</span>
+          </div>
         </div>
         <div className="flex flex-1 flex-col p-4">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="text-xs font-medium text-violet-600 dark:text-violet-400">
-                {item.category}
-              </p>
-              <h3 className="mt-0.5 font-semibold leading-tight group-hover:text-violet-600 dark:group-hover:text-violet-400">
-                {item.title}
-              </h3>
-            </div>
-            <div className="flex shrink-0 items-center gap-1 rounded-lg bg-amber-50 px-2 py-1 dark:bg-amber-950/50">
-              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-              <span className="text-sm font-bold">{item.averageRating.toFixed(1)}</span>
-            </div>
-          </div>
-          <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{item.description}</p>
-          <div className="mt-2 flex flex-wrap gap-1">
+          <p className="text-xs font-semibold uppercase tracking-wide text-violet-600 dark:text-violet-400">
+            {item.category}
+          </p>
+          <h3 className="mt-1 font-semibold leading-snug group-hover:text-violet-600 dark:group-hover:text-violet-400">
+            {item.title}
+          </h3>
+          <p className="mt-2 line-clamp-2 flex-1 text-sm text-muted-foreground">
+            {item.description}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-1">
             {item.tags.slice(0, 3).map((tag) => (
               <TagPill key={tag} label={tag} />
             ))}
@@ -77,17 +79,11 @@ export function RatingCard({ item, showDistribution = false, className }: Rating
               <RatingDistribution distribution={item.ratingDistribution} compact />
             </div>
           )}
+          <span className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-violet-600 px-3 py-2 text-sm font-medium text-white transition-colors group-hover:bg-violet-700">
+            Rate this
+          </span>
         </div>
       </Link>
-      <div className="border-t border-border px-4 py-3">
-        <Button
-          asChild
-          size="sm"
-          className="w-full bg-violet-600 hover:bg-violet-700"
-        >
-          <Link href={`/items/${item.slug}`}>Rate this</Link>
-        </Button>
-      </div>
     </motion.article>
   );
 }

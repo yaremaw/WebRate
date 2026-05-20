@@ -7,14 +7,14 @@ import { Share2, Bookmark, Star } from "lucide-react";
 import type { RateItem, Review } from "@/types";
 import { RatingStars } from "@/components/RatingStars";
 import { RatingDistribution } from "@/components/RatingDistribution";
-import { ReviewCard } from "@/components/ReviewCard";
+import { ClientReviews } from "@/components/ClientReviews";
 import { RatingCard } from "@/components/RatingCard";
 import { TagPill } from "@/components/TagPill";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { saveUserRating, getStoredReviews, saveStoredReview } from "@/lib/storage";
+import { saveUserRating, saveStoredReview } from "@/lib/storage";
 import { getRelatedItems } from "@/data/items";
 
 interface ItemDetailClientProps {
@@ -37,10 +37,7 @@ export function ItemDetailClient({ item }: ItemDetailClientProps) {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [anonymous, setAnonymous] = useState(false);
-  const [reviews, setReviews] = useState<Review[]>(() => {
-    const stored = getStoredReviews(item.slug);
-    return stored.length > 0 ? [...stored, ...item.reviews] : item.reviews;
-  });
+  const [reviewsKey, setReviewsKey] = useState(0);
   const [dimensions, setDimensions] = useState<Record<string, number>>({});
 
   const related = getRelatedItems(item, 3);
@@ -74,7 +71,7 @@ export function ItemDetailClient({ item }: ItemDetailClientProps) {
         funnyCount: 0,
       };
       saveStoredReview(item.slug, newReview);
-      setReviews((prev) => [newReview, ...prev]);
+      setReviewsKey((k) => k + 1);
     }
     toast.success("Your rating was saved.");
     setReviewText("");
@@ -201,13 +198,11 @@ export function ItemDetailClient({ item }: ItemDetailClientProps) {
           <section>
             <h2 className="text-xl font-bold">Reviews</h2>
             <div className="mt-4 space-y-4">
-              {reviews.length === 0 ? (
-                <p className="text-muted-foreground text-sm">
-                  No ratings yet. Be the first brave soul.
-                </p>
-              ) : (
-                reviews.map((review) => <ReviewCard key={review.id} review={review} />)
-              )}
+              <ClientReviews
+                key={reviewsKey}
+                slug={item.slug}
+                baseReviews={item.reviews}
+              />
             </div>
           </section>
         </div>

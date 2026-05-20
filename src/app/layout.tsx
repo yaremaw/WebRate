@@ -20,6 +20,16 @@ export const metadata: Metadata = {
     "Your opinion finally has a dashboard. Rate movies, food, places, apps, habits, and random life things.",
 };
 
+const themeInitScript = `
+(function() {
+  try {
+    var t = localStorage.getItem('rateverse-theme');
+    var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (dark) document.documentElement.classList.add('dark');
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,6 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased font-sans`}
       >
